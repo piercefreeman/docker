@@ -1,4 +1,4 @@
-name: Publish headfull-chromium
+name: Publish python-37
 
 on:
   push:
@@ -6,9 +6,8 @@ on:
       - main
 
 env:
-  PLAYWRIGHT_VERSION: "1.25.1"
-  BUILD_PATH: headfull-chromium
-  IMAGE: piercefreeman/headfull-chromium
+  BUILD_PATH: cuda-python37
+  IMAGE: piercefreeman/cuda-python37
 
 jobs:
   push_to_registry:
@@ -26,9 +25,9 @@ jobs:
 
       - name: Build container
         run: |
-          docker build --tag "$IMAGE:${GITHUB_SHA::7}" --build-arg PLAYWRIGHT_VERSION="$PLAYWRIGHT_VERSION" $BUILD_PATH
-          docker tag "$IMAGE:${GITHUB_SHA::7}" "$IMAGE:$PLAYWRIGHT_VERSION"
+          docker build --tag "$IMAGE:${GITHUB_SHA::7}" $BUILD_PATH
+          docker tag "$IMAGE:${GITHUB_SHA::7}" "$IMAGE:latest"
 
       - name: Publish to DockerHub
         run: |-
-          docker push "$IMAGE:$PLAYWRIGHT_VERSION"
+          docker push "$IMAGE:latest"
