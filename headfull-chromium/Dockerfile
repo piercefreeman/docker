@@ -24,8 +24,12 @@ RUN apt-get update && \
 
 ENV PLAYWRIGHT_BROWSERS_PATH=/ms-playwright
 
-# 2. Bake in browsers & deps.
+# 2. Bake in browsers & deps. We do npm installs in a temporary /ms-playwright-agent directory
+#    that is cleared after the browsers are installed. Image consumers are expected to install
+#    their own playwright dependency separately.
+#
 #    Browsers will be downloaded in `/ms-playwright`.
+#
 #    Note: make sure to set 777 to the registry so that any user can access
 #    registry.
 RUN mkdir /ms-playwright && \
@@ -33,7 +37,6 @@ RUN mkdir /ms-playwright && \
     cd /ms-playwright-agent && npm init -y && \
     npm i playwright-core && \
     npx playwright install chromium --with-deps && rm -rf /var/lib/apt/lists/* && \
-    rm /tmp/playwright-core.tar.gz && \
     rm -rf /ms-playwright-agent && \
     chmod -R 777 /ms-playwright
 
@@ -45,3 +48,8 @@ RUN apt-get update && \
     libxcursor1 libxdamage1 libxext6 libxfixes3 libxi6 libxrandr2 libxrender1 libxss1 libxtst6 \
     ca-certificates fonts-liberation libappindicator1 libnss3 lsb-release xdg-utils wget \
     xvfb x11vnc x11-xkb-utils xfonts-100dpi xfonts-75dpi xfonts-scalable xfonts-cyrillic x11-apps libgbm-dev
+
+# Include a default entrypoint that launches a default npm script as the entrypoint
+COPY ./entrypoint.sh entrypoint.sh
+
+ENTRYPOINT [ "./entrypoint.sh" ]
