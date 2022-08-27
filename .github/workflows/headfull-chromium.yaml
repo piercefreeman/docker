@@ -27,9 +27,9 @@ jobs:
 
       - name: Build container
         run: |
-          docker build --tag "$IMAGE:${GITHUB_SHA::7}" --build-arg PLAYWRIGHT_VERSION=$PLAYWRIGHT_VERSION $BUILD_PATH
+          docker build --tag "$IMAGE:${GITHUB_SHA::7}" --build-arg PLAYWRIGHT_VERSION="$PLAYWRIGHT_VERSION" $BUILD_PATH
           docker tag "$IMAGE:${GITHUB_SHA::7}" "$IMAGE:$PLAYWRIGHT_VERSION"
 
       - name: Publish to DockerHub
         run: |-
-          docker push "$IMAGE:$PLAYWRIGHT_VERSION
+          docker push "$IMAGE:$PLAYWRIGHT_VERSION"

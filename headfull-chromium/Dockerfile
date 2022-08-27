@@ -35,7 +35,7 @@ ENV PLAYWRIGHT_BROWSERS_PATH=/ms-playwright
 RUN mkdir /ms-playwright && \
     mkdir /ms-playwright-agent && \
     cd /ms-playwright-agent && npm init -y && \
-    npm i playwright-core && \
+    npm i playwright-core@$PLAYWRIGHT_VERSION && \
     npx playwright install chromium --with-deps && rm -rf /var/lib/apt/lists/* && \
     rm -rf /ms-playwright-agent && \
     chmod -R 777 /ms-playwright
@@ -50,6 +50,6 @@ RUN apt-get update && \
     xvfb x11vnc x11-xkb-utils xfonts-100dpi xfonts-75dpi xfonts-scalable xfonts-cyrillic x11-apps libgbm-dev
 
 # Include a default entrypoint that launches a default npm script as the entrypoint
-COPY ./entrypoint.sh entrypoint.sh
+COPY ./entrypoint.sh /entrypoint.sh
 
-ENTRYPOINT [ "./entrypoint.sh" ]
+ENTRYPOINT [ "/entrypoint.sh" ]

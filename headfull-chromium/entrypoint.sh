@@ -7,6 +7,7 @@ if [ "$1" = "run" ]; then
         # xvfb runs - like https://stackoverflow.com/questions/16726227/xvfb-failed-start-error
         find /tmp -type f -exec rm {} \;
 
+        cd $APP_PATH
         xvfb-run --server-args="-screen 0 1524x768x24" npm run start
 
         # holds exit status of last executed command
