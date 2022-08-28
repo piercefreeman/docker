@@ -1,14 +1,16 @@
 name: Publish headfull-chromium
 
-on:
-  push:
-    branches:
-      - main
+#on:
+#  push:
+#    branches:
+#      - main
+on: [push]
 
 env:
   PLAYWRIGHT_VERSION: "1.25.1"
   BUILD_PATH: headfull-chromium
   IMAGE: piercefreeman/headfull-chromium
+  ARCHITECTURES: linux/arm64,linux/amd64
 
 jobs:
   push_to_registry:
@@ -26,7 +28,7 @@ jobs:
 
       - name: Build container
         run: |
-          docker build --tag "$IMAGE:${GITHUB_SHA::7}" --build-arg PLAYWRIGHT_VERSION="$PLAYWRIGHT_VERSION" $BUILD_PATH
+          docker buildx build --tag "$IMAGE:${GITHUB_SHA::7}" --build-arg PLAYWRIGHT_VERSION="$PLAYWRIGHT_VERSION" -o type=image --platform="$ARCHITECTURES" $BUILD_PATH
           docker tag "$IMAGE:${GITHUB_SHA::7}" "$IMAGE:$PLAYWRIGHT_VERSION"
 
       - name: Publish to DockerHub
