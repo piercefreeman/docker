@@ -26,6 +26,16 @@ jobs:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_PASSWORD }}
 
+      # Unlike on OSX with Docker Desktop, a builder is not setup by default. We need this
+      # for downstream buildx tasks.
+      # We first need to setup binfmt to support arm64 builds
+      - name: Setup buildx builder
+        run: |
+          docker run --rm --privileged linuxkit/binfmt@a17941b47f5cb262638cfb49ffc59ac5ac2bf334-amd64
+          docker buildx create --name cibuilder
+          docker buildx use cibuilder
+          docker buildx inspect --bootstrap
+
       - name: Build container
         run: |
           docker buildx build --tag "$IMAGE:${GITHUB_SHA::7}" --build-arg PLAYWRIGHT_VERSION="$PLAYWRIGHT_VERSION" -o type=image --platform="$ARCHITECTURES" $BUILD_PATH
