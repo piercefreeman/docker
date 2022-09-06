@@ -51,5 +51,9 @@ RUN apt-get update && \
 
 # Include a default entrypoint that launches a default npm script as the entrypoint
 COPY ./entrypoint.sh /entrypoint.sh
+COPY ./run_vnc.sh /run_vnc.sh
+
+ENV VNC_PASSWORD "mypassword"
 
 ENTRYPOINT [ "/entrypoint.sh" ]
+CMD ["run"]

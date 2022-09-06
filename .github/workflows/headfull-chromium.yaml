@@ -12,6 +12,21 @@ env:
   ARCHITECTURES: linux/arm64,linux/amd64
 
 jobs:
+  push_readme:
+    name: Push DockerHub README
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out the repo
+        uses: actions/checkout@v3
+
+      - uses: ./actions/dockerhub-description
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_PASSWORD }}
+          repository: ${{ env.IMAGE }}
+          short-description: "Run chromium in docker like it's another desktop app"
+          readme-filepath: ${{ env.BUILD_PATH }}/README.md
+
   push_to_registry:
     name: Push to DockerHub
     runs-on: ubuntu-latest

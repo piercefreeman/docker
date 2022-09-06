@@ -1,18 +1,11 @@
 #!/bin/bash -e
 
 if [ "$1" = "run" ]; then
-    result=1
-    while [ $result -ne 0 ]; do
-        # Clear out temp files that might be remaining from previous
-        # xvfb runs - like https://stackoverflow.com/questions/16726227/xvfb-failed-start-error
-        find /tmp -type f -exec rm {} \;
-
-        cd $APP_PATH
-        xvfb-run --server-args="-screen 0 1524x768x24" npm run start
-
-        # holds exit status of last executed command
-        result=$?
-    done
+    # When running this we likely see a warning:
+    # > Xlib:  extension "DPMS" missing on display ":0".
+    # This is a known issue. DPMS corresponds to the Display Power Management Signaling extension
+    # and is not required for virtual displays
+    exec /run_vnc.sh --server-args="-screen 0 1524x768x24" $NODE_EXEC
 else
     exec "$@"
 fi

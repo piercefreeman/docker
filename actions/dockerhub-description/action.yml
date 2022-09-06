@@ -1,0 +1,34 @@
+name: 'Docker Hub Description'
+author: 'Peter Evans'
+description: 'An action to update a Docker Hub repository description from README.md'
+inputs:
+  username:
+    description: Docker Hub username
+    required: true
+  password:
+    description: Docker Hub password or Personal Access Token with read/write/delete scope
+    required: true
+  repository:
+    description: >
+      Docker Hub repository in the format `<namespace>/<name>`
+      Default: `github.repository`
+  short-description:
+    description: Docker Hub repository short description
+  readme-filepath:
+    description: >
+      Path to the repository readme
+      Default: `./README.md`
+runs:
+  using: "composite"
+  steps:
+    - name: setup dependencies
+      run: cd ${{ github.action_path }} && npm install && npm run build
+      shell: bash
+    - run: node ${{ github.action_path }}/lib/main.js
+      shell: bash
+      env:
+        INPUT_USERNAME: ${{ inputs.username }}
+        INPUT_PASSWORD: ${{ inputs.password }}
+        INPUT_REPOSITORY: ${{ inputs.repository }}
+        INPUT_SHORT-DESCRIPTION: ${{ inputs.short-description }}
+        INPUT_README-FILEPATH: ${{ inputs.readme-filepath }}
