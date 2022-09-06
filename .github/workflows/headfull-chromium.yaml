@@ -1,9 +1,10 @@
 name: Publish headfull-chromium
 
-on:
-  push:
-    branches:
-      - main
+#on:
+#  push:
+#    branches:
+#      - main
+on: [push]
 
 env:
   PLAYWRIGHT_VERSION: "1.25.1"
@@ -12,34 +13,49 @@ env:
   ARCHITECTURES: linux/arm64,linux/amd64
 
 jobs:
-  push_to_registry:
-    name: Push to DockerHub
+  push_readme:
+    name: Push DockerHub README
     runs-on: ubuntu-latest
     steps:
       - name: Check out the repo
         uses: actions/checkout@v3
-      
-      - name: Log in to DockerHub
-        uses: docker/login-action@v2
+
+      - uses: ./actions/dockerhub-description
         with:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_PASSWORD }}
+          repository: ${{ env.IMAGE }}
+          short-description: "Run chromium in docker like it's another desktop app"
+          readme-filepath: ${{ env.BUILD_PATH }}/README.md
 
-      # Unlike on OSX with Docker Desktop, a builder is not setup by default. We need this
-      # for downstream buildx tasks.
-      # We first need to setup binfmt to support arm64 builds
-      - name: Set up QEMU
-        uses: docker/setup-qemu-action@v1
+  # push_to_registry:
+  #   name: Push to DockerHub
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - name: Check out the repo
+  #       uses: actions/checkout@v3
+      
+  #     - name: Log in to DockerHub
+  #       uses: docker/login-action@v2
+  #       with:
+  #         username: ${{ secrets.DOCKERHUB_USERNAME }}
+  #         password: ${{ secrets.DOCKERHUB_PASSWORD }}
 
-      # https://github.com/docker/setup-buildx-action
-      - name: Set up Docker Buildx
-        id: buildx
-        uses: docker/setup-buildx-action@v1
+  #     # Unlike on OSX with Docker Desktop, a builder is not setup by default. We need this
+  #     # for downstream buildx tasks.
+  #     # We first need to setup binfmt to support arm64 builds
+  #     - name: Set up QEMU
+  #       uses: docker/setup-qemu-action@v1
 
-      - name: Build and push
-        uses: docker/build-push-action@v2
-        with:
-          context: ${{ env.BUILD_PATH }}
-          platforms: ${{ env.ARCHITECTURES }}
-          push: true
-          tags: ${{ env.IMAGE }}:${{ env.PLAYWRIGHT_VERSION }}
+  #     # https://github.com/docker/setup-buildx-action
+  #     - name: Set up Docker Buildx
+  #       id: buildx
+  #       uses: docker/setup-buildx-action@v1
+
+  #     - name: Build and push
+  #       uses: docker/build-push-action@v2
+  #       with:
+  #         context: ${{ env.BUILD_PATH }}
+  #         platforms: ${{ env.ARCHITECTURES }}
+  #         push: true
+  #         tags: ${{ env.IMAGE }}:${{ env.PLAYWRIGHT_VERSION }}
