@@ -46,7 +46,7 @@ services:
 
 ## Screen Control
 
-![MacOS VNC](../docs/chrome_vnc.png)
+![MacOS VNC](https://raw.githubusercontent.com/piercefreeman/docker/main/docs/chrome_vnc.png)
 
 We expose a VNC server so you can view and control the Chrome window that Playwright is executing through a regular VNC client. This effectively makes debugging through docker the same as debugging locally. The docker image will expose the VNC server on port `5900`, which can be mounted to any local host port once you launch the container. To try this out we bundle a small test application that showcases some of the business logic. You'll have to build this locally:
 
