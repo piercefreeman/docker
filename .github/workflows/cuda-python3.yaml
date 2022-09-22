@@ -16,8 +16,13 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        python: [3.7.7, 3.10.7]
-        cuda: [9.0-base-ubuntu16.04, 11.4.0-base-ubuntu20.04]
+        include:
+          - python: "3.7.7"
+            python_short: "3.7"
+            cuda: "9.0-base-ubuntu16.04"
+          - python: "3.10.7"
+            python_short: "3.10"
+            cuda: "11.4.0-base-ubuntu20.04"
     steps:
       - name: Check out the repo
         uses: actions/checkout@v3
@@ -35,5 +40,6 @@ jobs:
           build-args: |
             CUDA_BASE=${{ matrix.cuda }}
             PYTHON_VERSION=${{ matrix.python }}
+            PYTHON_VERSION_SHORT=${{ matrix.python_short }}
           push: true
           tags: ${{ env.IMAGE }}:${{ matrix.cuda }}-${{ matrix.python }}
