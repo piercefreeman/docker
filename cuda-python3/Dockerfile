@@ -41,5 +41,5 @@ RUN rm -rf /tmp/PythonInstall
 # pip -> pip3.x
 RUN ln -s /usr/local/bin/pip${PYTHON_VERSION_SHORT} /usr/local/bin/pip
 
-# python -> pip3.x
+# python -> python3.x
 RUN ln -s /usr/local/bin/python${PYTHON_VERSION_SHORT} /usr/local/bin/python

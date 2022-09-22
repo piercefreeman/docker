@@ -1,14 +1,13 @@
-name: Publish python-37
+name: Publish python-3
 
-#on:
-#  push:
-#    branches:
-#      - main
-on: [push]
+on:
+  push:
+    branches:
+      - main
 
 env:
   BUILD_PATH: cuda-python3
-  IMAGE: piercefreeman/cuda-python37
+  IMAGE: piercefreeman/cuda-python3
 
 jobs:
   push_to_registry:
