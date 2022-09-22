@@ -1,5 +1,8 @@
+ARG CUDA_BASE
+ARG PYTHON_VERSION
+
 # Install base cuda
-FROM nvidia/cuda:9.0-base-ubuntu16.04
+FROM nvidia/cuda:${CUDA_BASE}
 
 # Basic Python compilation utilities
 RUN apt-get update && \
@@ -21,20 +24,20 @@ RUN apt-get update && \
     apt-get install -y wget && \
     apt-get install -y liblzma-dev
 
-RUN mkdir /tmp/Python37
+RUN mkdir /tmp/PythonInstall
 
-RUN cd /tmp/Python37 && \
-    wget https://www.python.org/ftp/python/3.7.7/Python-3.7.7.tar.xz && \
-    tar xvf Python-3.7.7.tar.xz
+RUN cd /tmp/PythonInstall && \
+    wget https://www.python.org/ftp/python/${PYTHON_VERSION}/Python-${PYTHON_VERSION}.tar.xz && \
+    tar xvf Python-${PYTHON_VERSION}.tar.xz
 
-RUN cd /tmp/Python37/Python-3.7.7 && \
+RUN cd /tmp/PythonInstall/Python-${PYTHON_VERSION} && \
     ./configure && \
     make altinstall
 
-RUN rm -rf /tmp/Python37
+RUN rm -rf /tmp/PythonInstall
 
-# pip -> pip3.7
-RUN ln -s /usr/local/bin/pip3.7 /usr/local/bin/pip
+# pip -> pip3.x
+RUN ln -s /usr/local/bin/pip${PYTHON_VERSION} /usr/local/bin/pip
 
-# pip -> pip3.7
-RUN ln -s /usr/local/bin/python3.7 /usr/local/bin/python
+# python -> pip3.x
+RUN ln -s /usr/local/bin/python${PYTHON_VERSION} /usr/local/bin/python
