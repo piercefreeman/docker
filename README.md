@@ -9,6 +9,6 @@ A full suite of packages to support headfull Chromium execution: font installati
 docker pull piercefreeman/headfull-chromium:1.25.1
 ```
 
-## [cuda-python37](./cuda-python37/)
+## [cuda-python3](./cuda-python3/)
 
-A cuda installation that combines CUDA 9.0 and Python 3.7, which isn't available in the nvidia base image by default.
+A cuda installation that combines CUDA and Python 3.x, which isn't available in the nvidia base image by default.
