@@ -10,7 +10,6 @@ ARG PYTHON_VERSION_SHORT
 RUN apt-get update && \
     DEBIAN_FRONTEND=noninteractive apt-get install -y build-essential \
     checkinstall \
-    libreadline-gplv2-dev \
     libncursesw5-dev \
     libssl-dev \
     libsqlite3-dev \

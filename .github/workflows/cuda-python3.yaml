@@ -1,9 +1,9 @@
 name: Publish python-3
 
 on:
-  push:
-    branches:
-      - main
+ push:
+   branches:
+     - main
 
 env:
   BUILD_PATH: cuda-python3
@@ -37,6 +37,9 @@ jobs:
           - python: "3.10.7"
             python_short: "3.10"
             cuda: "11.4.0-base-ubuntu20.04"
+          - python: "3.10.7"
+            python_short: "3.10"
+            cuda: "11.7.1-cudnn8-runtime-ubuntu22.04"
     steps:
       - name: Check out the repo
         uses: actions/checkout@v3
