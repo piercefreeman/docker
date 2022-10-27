@@ -1,13 +1,11 @@
-name: Publish cuda-python
+name: Publish ubuntu-python
 
 on:
- push:
-   branches:
-     - main
+ - push
 
 env:
-  BUILD_PATH: cuda-python3
-  IMAGE: piercefreeman/cuda-python3
+  BUILD_PATH: ubuntu-python3
+  IMAGE: piercefreeman/ubuntu-python3
 
 jobs:
   push_readme:
@@ -22,7 +20,7 @@ jobs:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_PASSWORD }}
           repository: ${{ env.IMAGE }}
-          short-description: "An extension of nvidia's cuda containers with different python versions"
+          short-description: "An extension of ubuntu with different python versions"
           readme-filepath: ${{ env.BUILD_PATH }}/README.md
 
   push_to_registry:
@@ -33,13 +31,10 @@ jobs:
         include:
           - python: "3.7.7"
             python_short: "3.7"
-            cuda: "9.0-base-ubuntu16.04"
+            ubuntu: "18.04"
           - python: "3.10.7"
             python_short: "3.10"
-            cuda: "11.4.0-base-ubuntu20.04"
-          - python: "3.10.7"
-            python_short: "3.10"
-            cuda: "11.7.1-cudnn8-runtime-ubuntu22.04"
+            ubuntu: "18.04"
     steps:
       - name: Check out the repo
         uses: actions/checkout@v3
@@ -55,8 +50,8 @@ jobs:
         with:
           context: ${{ env.BUILD_PATH }}
           build-args: |
-            CUDA_BASE=${{ matrix.cuda }}
+            UBUNTU_BASE=${{ matrix.ubuntu }}
             PYTHON_VERSION=${{ matrix.python }}
             PYTHON_VERSION_SHORT=${{ matrix.python_short }}
           push: true
-          tags: ${{ env.IMAGE }}:${{ matrix.cuda }}-${{ matrix.python }}
+          tags: ${{ env.IMAGE }}:${{ matrix.ubuntu }}-${{ matrix.python }}
