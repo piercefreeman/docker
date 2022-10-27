@@ -4,12 +4,13 @@ Since the `nvidia-cuda`(https://hub.docker.com/r/nvidia/cuda) base images are li
 
 ## Installing
 
-Tag conventions are setup as `${ UBUNTU_VERSION }-${ PYTHON_VERSION }`. Examples:
+Tag conventions are setup as `${ CUDA_VERSION }-${ UBUNTU_VERSION }-${ PYTHON_VERSION }`. Examples:
 
-- `ubuntu-python3:18.04-3.7.7`
+- `cuda-python3:9.0-base-ubuntu16.04-3.7.7`
+- `cuda-python3:11.4.0-base-ubuntu20.04-3.10.7`
 
 This distribution starts with a limited matrix of version numbers that are not intended to be extensive. If you find yourself using a different combination and want it bundled as part of the build process, put up a [PR](https://github.com/piercefreeman/docker/pulls).
 
 ```
-docker pull piercefreeman/ubuntu-python3:18.04-3.7.7
+docker pull piercefreeman/cuda-python3:cuda-python3:9.0-base-ubuntu16.04-3.7.7
 ```

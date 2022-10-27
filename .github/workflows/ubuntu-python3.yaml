@@ -29,12 +29,7 @@ jobs:
     strategy:
       matrix:
         include:
-          - python: "3.7.7"
-            python_short: "3.7"
-            ubuntu: "18.04"
-          - python: "3.10.7"
-            python_short: "3.10"
-            ubuntu: "18.04"
+          - ubuntu: "18.04"
     steps:
       - name: Check out the repo
         uses: actions/checkout@v3
@@ -49,9 +44,8 @@ jobs:
         uses: docker/build-push-action@v2
         with:
           context: ${{ env.BUILD_PATH }}
+          file: ${{ env.BUILD_PATH }}/3-10.Dockerfile
           build-args: |
             UBUNTU_BASE=${{ matrix.ubuntu }}
-            PYTHON_VERSION=${{ matrix.python }}
-            PYTHON_VERSION_SHORT=${{ matrix.python_short }}
           push: true
-          tags: ${{ env.IMAGE }}:${{ matrix.ubuntu }}-${{ matrix.python }}
+          tags: ${{ env.IMAGE }}:${{ matrix.ubuntu }}-3.10
