@@ -6,7 +6,6 @@ on:
       - main
 
 env:
-  PLAYWRIGHT_VERSION: "1.25.1"
   BUILD_PATH: headfull-chromium
   IMAGE: piercefreeman/headfull-chromium
   ARCHITECTURES: linux/arm64,linux/amd64
@@ -28,6 +27,10 @@ jobs:
           readme-filepath: ${{ env.BUILD_PATH }}/README.md
 
   push_to_registry:
+    strategy:
+      matrix:
+        playwright_version: ["1.25.1", "1.31.1"]
+
     name: Push to DockerHub
     runs-on: ubuntu-latest
     steps:
@@ -57,4 +60,4 @@ jobs:
           context: ${{ env.BUILD_PATH }}
           platforms: ${{ env.ARCHITECTURES }}
           push: true
-          tags: ${{ env.IMAGE }}:${{ env.PLAYWRIGHT_VERSION }}
+          tags: ${{ env.IMAGE }}:${{ matrix.playwright_version }}
