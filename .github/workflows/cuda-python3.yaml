@@ -17,7 +17,7 @@ jobs:
       - name: Check out the repo
         uses: actions/checkout@v3
 
-      - uses: ./actions/dockerhub-description
+      - uses: piercefreeman/actions/dockerhub-description@main
         with:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_PASSWORD }}
