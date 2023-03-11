@@ -59,6 +59,6 @@ jobs:
           platforms: ${{ env.ARCHITECTURES }}
           push: true
           tags: ${{ env.IMAGE }}:${{ matrix.playwright_version }}
-          build-args:
-            - PLAYWRIGHT_VERSION=${{ matrix.playwright_version }}
-            - NODE_MAJOR_VERSION=18
+          build-args: |
+            PLAYWRIGHT_VERSION=${{ matrix.playwright_version }}
+            NODE_MAJOR_VERSION=18
