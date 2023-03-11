@@ -4,13 +4,14 @@ ARG DEBIAN_FRONTEND=noninteractive
 ARG TZ=America/Los_Angeles
 
 ARG PLAYWRIGHT_VERSION
+ARG NODE_MAJOR_VERSION
 
 # === INSTALL Node.js ===
 
 RUN apt-get update && \
-    # Install node16
+    # Install node18
     apt-get install -y curl wget gpg && \
-    curl -sL https://deb.nodesource.com/setup_16.x | bash - && \
+    curl -sL https://deb.nodesource.com/setup_$NODE_MAJOR_VERSION.x | bash - && \
     apt-get install -y nodejs && \
     # Feature-parity with node.js base images.
     apt-get install -y --no-install-recommends git openssh-client && \
