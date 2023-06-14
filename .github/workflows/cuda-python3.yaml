@@ -30,6 +30,8 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
+        # devel builds include nvcc and the cuDNN header files
+        # runtime builds include the minimum necessary to run cuda
         include:
           - python: "3.7.7"
             python_short: "3.7"
@@ -40,6 +42,9 @@ jobs:
           - python: "3.10.7"
             python_short: "3.10"
             cuda: "11.7.1-cudnn8-runtime-ubuntu22.04"
+          - python: "3.10.7"
+            python_short: "3.10"
+            cuda: "11.7.1-cudnn8-devel-ubuntu22.04"
     steps:
       - name: Check out the repo
         uses: actions/checkout@v3
