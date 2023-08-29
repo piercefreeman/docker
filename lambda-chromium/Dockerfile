@@ -72,4 +72,4 @@ RUN apt-get update && \
     rm -rf /var/lib/apt/lists/*
 
 # Set runtime interface client as default command for the container runtime
-ENTRYPOINT ["/usr/bin/npx", "aws-lambda-ric"]
+ENTRYPOINT [ "node", "/usr/lib/node_modules/aws-lambda-ric/bin/index.mjs" ]

@@ -1,5 +1,5 @@
 # Fix --platform for M1; remove for other configurations
-FROM --platform=linux/arm64 piercefreeman/lambda-chromium:1.37.1
+FROM --platform=linux/amd64 piercefreeman/lambda-chromium:1.37.1
 
 RUN mkdir /app
 WORKDIR /app
