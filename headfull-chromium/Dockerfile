@@ -36,7 +36,7 @@ RUN mkdir /ms-playwright && \
     mkdir /ms-playwright-agent && \
     cd /ms-playwright-agent && npm init -y && \
     npm i playwright-core@$PLAYWRIGHT_VERSION && \
-    npx playwright install chromium --with-deps && rm -rf /var/lib/apt/lists/* && \
+    npx playwright@$PLAYWRIGHT_VERSION install chromium --with-deps && rm -rf /var/lib/apt/lists/* && \
     rm -rf /ms-playwright-agent && \
     chmod -R 777 /ms-playwright
 

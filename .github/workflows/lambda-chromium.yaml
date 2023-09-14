@@ -65,6 +65,8 @@ jobs:
         with:
           context: ${{ env.BUILD_PATH }}
           platforms: ${{ env.ARCHITECTURES }}
+          build-args:
+            PLAYWRIGHT_VERSION: ${{ matrix.playwright_version }}
           push: true
           tags: ${{ env.IMAGE }}:${{ matrix.playwright_version }}
           cache-from: type=local,src=/tmp/.buildx-cache
