@@ -31,19 +31,9 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 ARG TARGETARCH
 
 # Download and install Go depending on the current architecture
-RUN if [ "$TARGETARCH" = "amd64" ]; then \
-    SUFFIX="amd64"; \
-    GOARCH="amd64"; \
-    elif [ "$TARGETARCH" = "arm64" ]; then \
-    SUFFIX="arm64"; \
-    GOARCH="arm64"; \
-    else \
-    echo "Unsupported architecture: $TARGETARCH"; \
-    exit 1; \
-    fi && \
-    curl -L "https://golang.org/dl/go${GOLANG_VERSION}.linux-${SUFFIX}.tar.gz" -o "go${GOLANG_VERSION}.linux-${SUFFIX}.tar.gz" && \
-    tar -C /usr/local -xzf "go${GOLANG_VERSION}.linux-${SUFFIX}.tar.gz" && \
-    rm "go${GOLANG_VERSION}.linux-${SUFFIX}.tar.gz"
+RUN curl -L "https://golang.org/dl/go${GOLANG_VERSION}.linux-${TARGETARCH}.tar.gz" -o "go${GOLANG_VERSION}.linux-${TARGETARCH}.tar.gz" && \
+    tar -C /usr/local -xzf "go${GOLANG_VERSION}.linux-${TARGETARCH}.tar.gz" && \
+    rm "go${GOLANG_VERSION}.linux-${TARGETARCH}.tar.gz"
 
 # Set GOARCH environment variable
-ENV GOARCH=${GOARCH}
+ENV GOARCH=${TARGETARCH}
