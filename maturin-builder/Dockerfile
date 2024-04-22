@@ -33,8 +33,10 @@ ARG TARGETARCH
 # Download and install Go depending on the current architecture
 RUN if [ "$TARGETARCH" = "amd64" ]; then \
     SUFFIX="amd64"; \
+    GOARCH="amd64"; \
     elif [ "$TARGETARCH" = "arm64" ]; then \
     SUFFIX="arm64"; \
+    GOARCH="arm64"; \
     else \
     echo "Unsupported architecture: $TARGETARCH"; \
     exit 1; \
@@ -42,3 +44,6 @@ RUN if [ "$TARGETARCH" = "amd64" ]; then \
     curl -L "https://golang.org/dl/go${GOLANG_VERSION}.linux-${SUFFIX}.tar.gz" -o "go${GOLANG_VERSION}.linux-${SUFFIX}.tar.gz" && \
     tar -C /usr/local -xzf "go${GOLANG_VERSION}.linux-${SUFFIX}.tar.gz" && \
     rm "go${GOLANG_VERSION}.linux-${SUFFIX}.tar.gz"
+
+# Set GOARCH environment variable
+ENV GOARCH=${GOARCH}

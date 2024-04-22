@@ -1,9 +1,10 @@
 name: Publish maturin-builder
 
-on:
-  push:
-    branches:
-      - main
+#on:
+#  push:
+#    branches:
+#      - main
+on: [push]
 
 env:
   BUILD_PATH: maturin-builder
