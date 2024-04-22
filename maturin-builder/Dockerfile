@@ -31,9 +31,11 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 ARG TARGETARCH
 
 # Download and install Go depending on the current architecture
-RUN curl -L "https://golang.org/dl/go${GOLANG_VERSION}.linux-${TARGETARCH}.tar.gz" -o "go${GOLANG_VERSION}.linux-${TARGETARCH}.tar.gz" && \
-    tar -C /usr/local -xzf "go${GOLANG_VERSION}.linux-${TARGETARCH}.tar.gz" && \
-    rm "go${GOLANG_VERSION}.linux-${TARGETARCH}.tar.gz"
+# We assume users will always be running arm64 on amd64 hosts with emulation mode
+RUN curl -L "https://golang.org/dl/go${GOLANG_VERSION}.linux-amd64.tar.gz" -o "go${GOLANG_VERSION}.linux-amd64.tar.gz" && \
+    tar -C /usr/local -xzf "go${GOLANG_VERSION}.linux-amd64.tar.gz" && \
+    rm "go${GOLANG_VERSION}.linux-amd64.tar.gz"
 
-# Set GOARCH environment variable
+# Set GOARCH environment variable, this determines the cross-compilation utilities
+# that will be used if we are targeting arm64
 ENV GOARCH=${TARGETARCH}
