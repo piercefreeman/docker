@@ -1,4 +1,4 @@
-name: Publish lambda-chromium
+name: Publish maturin-builder
 
 on:
   push:
@@ -6,10 +6,9 @@ on:
       - main
 
 env:
-  BUILD_PATH: lambda-chromium
-  IMAGE: piercefreeman/lambda-chromium
-  ARCHITECTURES: linux/amd64
-  CACHE_KEY: buildx-cache-${{ github.sha }}
+  BUILD_PATH: maturin-builder
+  IMAGE: piercefreeman/maturin-builder
+  ARCHITECTURES: linux/arm64,linux/amd64
 
 jobs:
   push_readme:
@@ -24,27 +23,19 @@ jobs:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_PASSWORD }}
           repository: ${{ env.IMAGE }}
-          short-description: "Run chromium on AWS Lambda"
+          short-description: "Run chromium in docker like it's another desktop app"
           readme-filepath: ${{ env.BUILD_PATH }}/README.md
 
   push_to_registry:
     strategy:
       matrix:
-        playwright_version: ["1.31.1", "1.37.1"]
+        python: ["3.11", "3.12"]
 
     name: Push to DockerHub
     runs-on: ubuntu-latest
     steps:
       - name: Check out the repo
         uses: actions/checkout@v3
-
-      - name: Cache Docker layers
-        uses: actions/cache@v2
-        with:
-          path: /tmp/.buildx-cache
-          key: ${{ env.CACHE_KEY }}
-          restore-keys: |
-            buildx-cache-
 
       - name: Log in to DockerHub
         uses: docker/login-action@v2
@@ -66,11 +57,9 @@ jobs:
       - name: Build and push
         uses: docker/build-push-action@v2
         with:
+          build-args: |
+            PYTHON_VERSION=${{ matrix.python }}
           context: ${{ env.BUILD_PATH }}
           platforms: ${{ env.ARCHITECTURES }}
-          build-args: |
-            PLAYWRIGHT_VERSION=${{ matrix.playwright_version }}
           push: true
-          tags: ${{ env.IMAGE }}:${{ matrix.playwright_version }}
-          cache-from: type=local,src=/tmp/.buildx-cache
-          cache-to: type=local,dest=/tmp/.buildx-cache
+          tags: ${{ env.IMAGE }}:${{ matrix.python }}
